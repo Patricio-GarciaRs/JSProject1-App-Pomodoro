@@ -8,6 +8,8 @@ const bAdd = document.querySelector('#bAdd')
 const itTask = document.querySelector('#itTask')
 const form = document.querySelector('#form')
 const taskName = document.querySelector('#time #taskName');
+const upperMsg = document.querySelector('#time #upperMsg');
+let breakActive = false;
 
 renderTime();
 renderTasks();
@@ -35,37 +37,51 @@ function createTask(value) {
 function renderTasks () {
     const html = tasks.map(task => {
         return `
-                <div class="task row">
-                    <div class="completed col-6 order-last">${
+                <div class="task row mb-3 data-id="${task.id}">
+                    <div class="completed col-2 order-last">${
                         task.completed
-                        ? `<span class="done">Done</span>`
+                        ? `<button class="done" data-id="${task.id}">Done</button>`
                         : `<button class="startBtn" data-id="${task.id}">Start</button>`
                     }</div>
-                    <div class="title col-6 order-first">${task.title}</div>
+                    <div class="title col order-first">${task.title}</div>
                 </div>
         `;
     });
     const taskContainer = document.querySelector("#tasks");
     taskContainer.innerHTML = html.join("")
-
     const startBtns = document.querySelectorAll('.task .startBtn');
 
     startBtns.forEach(button => {
         button.addEventListener('click', e =>{
-            if(!timer){
+            if(!breakActive && !timer){
                 const id = button.getAttribute('data-id');
                 startBtnHandler(id);
                 button.textContent = 'In progress...'
             }
         })
     })
+    const deleteBtns = document.querySelectorAll('.task .done');
+
+    deleteBtns.forEach(button => {
+        button.addEventListener('click', e =>{
+            const id = button.getAttribute('data-id');
+            removeTaskById(id)
+        })
+    })
+}
+
+function removeTaskById(id){
+    const taskToDelete = tasks.findIndex(task => task.id === id)
+    tasks.splice(taskToDelete, 1);
+    renderTasks();
 }
 
 function startBtnHandler(id){
-    time = 25 * 60;
+    time = 5;
     current = id;
     const taskIndex = tasks.findIndex(task => task.id === id);
     taskName.textContent = tasks[taskIndex].title;
+    upperMsg.textContent = 'Focus'
 
     timer = setInterval(() =>{
         timeHandler(id);
@@ -86,8 +102,10 @@ function timeHandler(id){
 }
 
 function startBreak(){
-    time = 5 * 60;
-    taskName.textContent = 'Break';
+    time = 5;
+    taskName.textContent = '';
+    upperMsg.textContent = 'Break';
+    breakActive = true;
     timerBreak = setInterval(() => {
         timerBreakHandler();
     }, 1000);
@@ -101,7 +119,8 @@ function timerBreakHandler(){
         clearInterval(timerBreak);
         current = null;
         timerBreak = null;
-        taskName.textContent = "";
+        upperMsg.textContent = '';
+        breakActive = false;
         renderTasks();
     }
 }

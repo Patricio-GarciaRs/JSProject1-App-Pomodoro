@@ -1,12 +1,18 @@
 /* FONTS */
 @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+*{
+    font-family: 'Montserrat', sans-serif;
+}
 
 body{
     background-image: linear-gradient(60deg, #FBAB7E 0%, #F7CE68 100%);
 }
 #main-container{
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    height: 500px;
+    height: auto;
+    min-height: 500px;
 }
 #value{
     font-family: 'Major Mono Display', monospace;
@@ -33,6 +39,7 @@ body{
     justify-content: center;
     border-radius: 50px;
     background-color: white;
+    width: 300px;
 }
 .startBtn{
     text-align: center;
@@ -41,4 +48,25 @@ body{
     border: 1px solid;
     border-radius: 50px;
     background-color: rgb(27, 243, 45);
+}
+.done{
+    text-align: center;
+    height: 50px;
+    width: 120px;
+    border: 1px solid;
+    border-radius: 50px;
+    background-color: white;
+    box-shadow: inset 0 0 0 0 #D80286;
+    -webkit-transition: ease-out 0.4s;
+    -moz-transition: ease-out 0.4s;
+    transition: ease-out 0.5s;
+}
+.done:hover{
+    box-shadow: inset 400px 0 0 0 #D80286;
+}
+#upperMsg{
+    font-size: 3rem;
+}
+#taskName {
+    font-size: 1.5rem;
 }
